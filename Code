@@ -1,0 +1,58 @@
+#include <iostream>
+#include <string>
+#include <cstdlib>
+using namespace std;
+
+struct Passenger {
+    int seat, age;
+    string name;
+    char gender;
+    Passenger *next;
+};
+
+int main() {
+    int *s = (int*)malloc(30 * sizeof(int));
+    for(int i=0; i<30; i++) s[i]=0;
+
+    Passenger *head=NULL;
+    int ch;
+
+    cout<<"1.Book  2.Cancel  3.Status  4.Passengers  5.Exit\n";
+    cout<<"Enter choice: ";
+    cin>>ch;
+
+    if(ch==1) {
+        int i=0;
+        while(i<30 && s[i]) i++;
+
+        if(i<30) {
+            Passenger *p=new Passenger;
+            p->seat=i+1;
+            cout<<"Name: "; cin>>ws; getline(cin,p->name);
+            cout<<"Age: "; cin>>p->age;
+            cout<<"Gender: "; cin>>p->gender;
+            s[i]=1;
+            p->next=head;
+            head=p;
+            cout<<"Ticket booked! Seat: "<<p->seat;
+        }
+        else cout<<"No seats available";
+    }
+    else if(ch==2) {
+        int n;
+        cout<<"Enter seat number: "; cin>>n;
+        if(n>=1 && n<=30) s[n-1]=0;
+        cout<<"Seat cancelled if previously booked";
+    }
+    else if(ch==3) {
+        for(int i=0;i<30;i++)
+            cout<<"\nSeat "<<i+1<<": "<<(s[i]?"Booked":"Available");
+    }
+    else if(ch==4) {
+        cout<<"Passenger list is empty in this run.";
+    }
+    else if(ch==5) cout<<"Exit";
+
+    free(s);
+    return 0;
+}
